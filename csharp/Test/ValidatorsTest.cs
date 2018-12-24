@@ -24,7 +24,8 @@ namespace SeleniumLocatorValidation.Test {
 		private const int window_heght = 800;
 		private Actions actions;
 		*/
-		[OneTimeSetUp]
+		// [OneTimeSetUp]
+		[SetUp]
 		public void SetUp()
 		{
 			/*
@@ -45,7 +46,8 @@ namespace SeleniumLocatorValidation.Test {
 			*/
 		}
 
-		[OneTimeTearDown]
+		// [OneTimeTearDown]
+		[TearDown]
 		public void TearDown()
 		{/*
 			try {
@@ -62,7 +64,7 @@ namespace SeleniumLocatorValidation.Test {
 		[TestCase("/tr[0]/../th")]
 		// [TestCase("")]
 		public void ShouldDetectInvalidCssSelector(String selector){
-			Assert.IsFalse(selector.SimpleCssSelectorTestExtensionMethod());
+			Assert.IsFalse(CssSelectorValidator.IsValidExpression(selector));
 		}
 		
 		[TestCase("a[@class='main']/b//c[@class='main']")]
@@ -70,7 +72,7 @@ namespace SeleniumLocatorValidation.Test {
 		[TestCase("/tr[0]/../th")]
 		// [TestCase("")]
 		public void DetectValidXpath(String selector){
-			Assert.IsTrue(selector.SimpleXPathTestExtensionMethod());
+			Assert.IsTrue(selector.IsValidXPathExpressionExtensionMethod());
 		}
 		
 		[TestCase("a.class > b#id  c:nth-of-type(1)")]
@@ -78,7 +80,7 @@ namespace SeleniumLocatorValidation.Test {
 		[TestCase("body > h1[name='hello'] h2:nth-of-type(1) div")]
 		[TestCase("form#formid[name$='form'] input.class[name^='Pass']")]
 		public void ShouldDetectInvalidXpath(String selector){
-			Assert.IsFalse(selector.SimpleXPathTestExtensionMethod());
+			Assert.IsFalse(XPathValidator.IsValidExpression(selector));
 		}
 
 		[TestCase("a.class > b#id  c:nth-of-type(1)")]
@@ -86,7 +88,7 @@ namespace SeleniumLocatorValidation.Test {
 		[TestCase("body > h1[name='hello'] h2:nth-of-type(1) div")]
 		[TestCase("form#formid[name$='form'] input.class[name^='Pass']")]
 		public void ShouldDetectValidCssSelector(String selector){
-			Assert.IsTrue(selector.SimpleCssSelectorTestExtensionMethod());
+			Assert.IsTrue(selector.IsValidCssSelectorExpressionExtensionMethod());
 		}
 	}
 }
