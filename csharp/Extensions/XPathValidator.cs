@@ -10,17 +10,14 @@ using NUnit.Framework;
 
 namespace SeleniumLocatorValidation.Extensions
 {
-	public static class XPathValidator
-	{
+	public static class XPathValidator {
 		private static String TOKEN_EXTRACTOR = "^\\s*(/?/?\\s*[^ /\\[]+(?:\\[[^\\]]+\\])*)($|\\s*//?\\s*[^ /\\[]+.*$)";
 
-		public static Boolean IsValidXPathExpressionExtensionMethod(this string locator)
-		{
+		public static Boolean IsValidXPathExpressionExtensionMethod(this string locator) {
 			return (new Regex(TOKEN_EXTRACTOR, RegexOptions.IgnoreCase | RegexOptions.Compiled)).IsMatch(locator);
 		}
 
-		public static Boolean IsValidExpression(string locator)
-		{
+		public static Boolean IsValidExpression(string locator) {
 			return (new Regex(TOKEN_EXTRACTOR, RegexOptions.IgnoreCase | RegexOptions.Compiled)).IsMatch(locator);
 		}
 	}

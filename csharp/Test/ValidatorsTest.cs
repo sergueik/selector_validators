@@ -15,6 +15,51 @@ namespace SeleniumLocatorValidation.Test {
 	public class ValidatorsTest	{
 
 		private StringBuilder verificationErrors = new StringBuilder();
+		// All these will be recognized as invalid Css
+		// http://gigi.nullneuron.net/gigilabs/data-driven-tests-with-nunit/
+		[TestCase("a[@class='main']/b//c[@class='main']")]
+		[TestCase("/body//td/following-sibling::td[1]")]
+		[TestCase("/tr[0]/../th")]
+		// [TestCase("")]
+		public void ShouldDetectInvalidCssSelector(String selector){
+			Assert.IsFalse(CssSelectorValidator.IsValidExpression(selector));
+		}
+		
+		// All these will be ranked a valid XPath
+		// NOTE: this is the weeakest test currently
+		[TestCase("a[@class='main']/b//c[@class='main']")]
+		[TestCase("/body//td/following-sibling::td[1]")]
+		[TestCase("/tr[0]/../th")]
+		public void DetectValidXpath(String selector){
+			Assert.IsTrue(selector.IsValidXPathExpressionExtensionMethod());
+		}
+
+		// All these will be recognized as invalid XPath		
+		[TestCase("a.class > b#id  c:nth-of-type(1)")]
+		[TestCase("div.class ~ input#id")]
+		[TestCase("body > h1[name='hello'] h2:nth-of-type(1) div")]
+		[TestCase("form#formid[name$='form'] input.class[name^='Pass']")]
+		public void ShouldDetectInvalidXpath(String selector){
+			Assert.IsFalse(XPathValidator.IsValidExpression(selector));
+		}
+
+		// https://stackoverflow.com/questions/15014461/use-nunit-assert-throws-method-or-expectedexception-attribute
+		[ExpectedException( "NUnit.Framework.AssertionException" )]
+		// These is currently not recognized as valid Css
+		[TestCase("input:not([class*='disabled'])")]
+		[TestCase("#id:not([class='disabled'])")]
+		public void ShouldFailValidCssSelector(String selector){
+			Assert.IsTrue(selector.IsValidCssSelectorExpressionExtensionMethod());
+		}
+
+		// All these will be ranked a valid Css
+		[TestCase("a.class > b#id  c:nth-of-type(1)")]
+		[TestCase("div.class ~ input#id")]
+		[TestCase("body > h1[name='hello'] h2:nth-of-type(1) div")]
+		[TestCase("form#formid[name$='form'] input.class[name^='Pass']")]
+		public void ShouldDetectValidCssSelector(String selector){
+			Assert.IsTrue(selector.IsValidCssSelectorExpressionExtensionMethod());
+		}
 		/*
 		private IWebDriver driver;
 		private bool headless = false;
@@ -26,8 +71,7 @@ namespace SeleniumLocatorValidation.Test {
 		*/
 		// [OneTimeSetUp]
 		[SetUp]
-		public void SetUp()
-		{
+		public void SetUp() {
 			/*
 			driver = new ChromeDriver(System.IO.Directory.GetCurrentDirectory());
 			if (headless) { 
@@ -48,47 +92,14 @@ namespace SeleniumLocatorValidation.Test {
 
 		// [OneTimeTearDown]
 		[TearDown]
-		public void TearDown()
-		{/*
+		public void TearDown() {
+			/*
 			try {
 				driver.Quit();
 			} catch (Exception) {
 			} // Ignore cleanup errors
 			*/
 			Assert.AreEqual("", verificationErrors.ToString());
-		}
-
-		// http://gigi.nullneuron.net/gigilabs/data-driven-tests-with-nunit/
-		[TestCase("a[@class='main']/b//c[@class='main']")]
-		[TestCase("/body//td/following-sibling::td[1]")]
-		[TestCase("/tr[0]/../th")]
-		// [TestCase("")]
-		public void ShouldDetectInvalidCssSelector(String selector){
-			Assert.IsFalse(CssSelectorValidator.IsValidExpression(selector));
-		}
-		
-		[TestCase("a[@class='main']/b//c[@class='main']")]
-		[TestCase("/body//td/following-sibling::td[1]")]
-		[TestCase("/tr[0]/../th")]
-		// [TestCase("")]
-		public void DetectValidXpath(String selector){
-			Assert.IsTrue(selector.IsValidXPathExpressionExtensionMethod());
-		}
-		
-		[TestCase("a.class > b#id  c:nth-of-type(1)")]
-		[TestCase("div.class ~ input#id")]
-		[TestCase("body > h1[name='hello'] h2:nth-of-type(1) div")]
-		[TestCase("form#formid[name$='form'] input.class[name^='Pass']")]
-		public void ShouldDetectInvalidXpath(String selector){
-			Assert.IsFalse(XPathValidator.IsValidExpression(selector));
-		}
-
-		[TestCase("a.class > b#id  c:nth-of-type(1)")]
-		[TestCase("div.class ~ input#id")]
-		[TestCase("body > h1[name='hello'] h2:nth-of-type(1) div")]
-		[TestCase("form#formid[name$='form'] input.class[name^='Pass']")]
-		public void ShouldDetectValidCssSelector(String selector){
-			Assert.IsTrue(selector.IsValidCssSelectorExpressionExtensionMethod());
 		}
 	}
 }

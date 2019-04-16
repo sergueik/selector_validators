@@ -20,7 +20,17 @@ CSS_ATTRIBUTE_CONDITION_EXTRACTOR = "(?i)^(-?[_a-z]+[_a-z0-9-]*|\\*)?(#[_a-z0-9-
 ```java
 TOKEN_EXTRACTOR = "^\\s*(/?/?\\s*[^ /\\[]+(?:\\[[^\\]]+\\])*)($|\\s*//?\\s*[^ /\\[]+.*$)";
 ```
+### TODO
 
+The cssSelector validator does not recognize atttibute negation semantics, often found in locating of invisible elements in the page:
+
+```java
+input:not([class*='disabled'])
+```
+or
+```java
+#id:not([class*='disabled'])
+```
 ### License
 This project is licensed under the terms of the MIT license.
 

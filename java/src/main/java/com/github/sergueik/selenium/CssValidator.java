@@ -28,10 +28,6 @@ public class CssValidator {
 		return instance;
 	}
 
-//@formatter:off
-	private static final String CSS_CONDTION_EXTRACTOR_FIXED = "(?i)^(-?[_a-z]+[_a-z0-9-]*|\\*)?(#[_a-z0-9-]*)?(\\.[_a-z0-9-]*)?(:[a-z][a-z\\-]*\\([^)]+\\))?(\\[\\s*-?[_a-z]+[_a-z0-9-]*\\s*(\\=|\\~=|\\|=|\\^=|\\$=|\\*=)?\\s*([\"'][-_.#a-z0-9:\\/ ]+[\"']|[-_.#a-z0-9:\\/]+)?\\s*\\])*$";
-//@formatter:on
-
 	@SuppressWarnings("unused")
 	private boolean debug = false;
 

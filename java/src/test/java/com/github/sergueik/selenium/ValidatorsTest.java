@@ -55,6 +55,13 @@ public class ValidatorsTest {
 				String.format("\"%s\"to be valid CSS selector", cssSelector));
 	}
 
+	// based on: https://www.baeldung.com/junit-assert-exception
+	@Test(dataProvider = "Valid but Failing CssSelectors", enabled = true, expectedExceptions = java.lang.AssertionError.class)
+	public void cssSelectorFailingFrammarTest(String cssSelector) {
+		assertTrue(cssValidator.comprehensiveTokenTest(cssSelector),
+				String.format("\"%s\"to be valid CSS selector", cssSelector));
+	}
+
 	@Test(dataProvider = "Valid XPaths", enabled = true)
 	public void cssSelectorComprehensiveNegativeTest(String xpath) {
 		assertFalse(cssValidator.comprehensiveTokenTest(xpath), String.format(
@@ -107,6 +114,14 @@ public class ValidatorsTest {
 				{ "body > h1[name='hello'] h2:nth-of-type(1) div" }, };
 	}
 
+	// valid currently failing cssSelectors data
+	@DataProvider(name = "Valid but Failing CssSelectors")
+	public Object[][] Data7() {
+		return new Object[][] { { "#id:not([class='disabled'])" },
+				{ "#id:not([class='disabled']):not([href^='file'])" },
+				{ "input:not([class*='disabled'])" }, };
+	}
+
 	// Valid cssSelector condition
 	@DataProvider(name = "Valid CssSelector Conditions")
 	public Object[][] Data2() {
@@ -117,6 +132,14 @@ public class ValidatorsTest {
 				// combinations
 				{ "div.class:nth-of-type(1)" }, { "input#id[name^='Pass']" },
 				{ "input.class[name^='Pass']" }, };
+	}
+
+	// valid currently failing cssSelectors condition
+	@DataProvider(name = "Valid but Failing CssSelector Conditions")
+	public Object[][] Data8() {
+		return new Object[][] { { "#id:not([class='disabled'])" },
+				{ "#id:not([class='disabled']):not([href^='file'])" },
+				{ "input:not([class*='disabled'])" }, };
 	}
 
 	// Valid XPath data
